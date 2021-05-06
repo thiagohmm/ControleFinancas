@@ -3,8 +3,8 @@ import { excluirTransaction } from '../controller/transaction_controler'
 
 export default function List(props) {
 
-  const setaValor = async (id, mes) =>{
-     const dataresult = await excluirTransaction(id,mes)
+  const setaValor = async (id, mes,search) =>{
+     const dataresult = await excluirTransaction(id,mes,search)
      props.updateList(dataresult)
     
 
@@ -35,7 +35,7 @@ export default function List(props) {
       <td>{props.description}</td>
       <td>{props.value.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}</td>
       <button type="button" className="btn btn-info btn-sm">Editar</button>
-      <button type="button" className="btn btn-warning btn-sm" onClick={() => setaValor(props.id,props.month)}>Deletar</button>
+      <button type="button" className="btn btn-warning btn-sm" onClick={() => setaValor(props.id,props.month,props.hasSearch)}>Deletar</button>
     </tr>
     </tbody>    
     </table>
