@@ -6,10 +6,11 @@ import Resumo from './Resumo';
 import List from './List'
 import Label from './Label';
 import Pesquisa from './Pesquisa';
+import Inclusao from './Inclusao';
 
 
 
-const today = new Date();
+
 
 function getperiodToday (data) {
 
@@ -28,14 +29,15 @@ function Inicial() {
   const [pesquisa, SetPesquisa] = useState('');
   const [period, setPeriod] = useState(new Date());
   const [result, setResult] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [modal, setModal] = useState(false);
+  
 
 
 
   useEffect(() => {
  
     async function getSelectResult() {
-      setIsLoading(true);
+     
 
       if (pesquisa === ''){
       const apiPeriodToday = await getTransactionDate(getperiodToday(period));
@@ -51,8 +53,9 @@ function Inicial() {
       }
      
       
-      setIsLoading(false);
+     
       
+     
     }
 
     getSelectResult();
@@ -60,23 +63,30 @@ function Inicial() {
 
 
 
- 
-
-
+  const mostraInclusao = () =>{
+    setModal(true)
+    console.log(modal)
+  }
 
 
   return ( 
+
+    
+    
   <div className="jumbotron " style={{position: 'absolute'}}>
   <h1 className="display-5">Bootcamp Full Stack - Desafio Final </h1>
   <p className="lead">Controle Financeiro Pessoal</p>
   
   
   <p className="lead">
-    <a className="btn btn-primary btn-lg" href="#" role="button">Novo Lançamento</a>
+    <a className="btn btn-primary btn-lg" href="#" role="button" onClick={() => mostraInclusao()} >Novo Lançamento</a>
     
   </p>
 
   <hr className="my-4"/>
+
+  {modal == true ?(<Inclusao fecharModal={setModal}></Inclusao>):("")}
+
   <div className="row">
   < div className="col-md-6">
       <div className="form-group">
@@ -99,8 +109,7 @@ function Inicial() {
 
               </div>
               </div>
-
-
+             
 
 
 </div>
@@ -110,8 +119,11 @@ function Inicial() {
    <div style={{ paddingTop: '20px', paddingBottom: '10px'}}>
    <Resumo registro ={result} ></Resumo>
    </div>
+
    {result.map((item) => <List dia={item.day} category={item.category} description={item.description} 
-   value={item.value} type={item.type} month={item.yearMonth} id={item._id} updateList={setResult} hasSearch={pesquisa}></List>)}
+   value={item.value} type={item.type} month={item.yearMonth} id={item._id} yearMonthDay={item.yearMonthDay} updateList={setResult} hasSearch={pesquisa} fecharModal={setModal}></List>)}
+
+   
 </div>
   )
 }
