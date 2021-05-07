@@ -16,13 +16,33 @@ transactionRouter.get('/', async(req, res)=>{
     const period = req.query.period;
     console.log(period)
 
-    if(!req.query.period){
+
+    const id = req.query.id
+
+
+
+
+
+
+    if(!req.query.period && !req.query.id){
      res.send("É necessário informar o parametro \"period\", cujo valor deve estar no formato yyyy-mm")
     }else{
+
+      if(period && !id){
    
     const transaction = await TransactionModel.find({yearMonth: period}).sort()
     res.send(transaction)
     }
+    
+    if(!period && id){
+
+      const transaction = await TransactionModel.find({_id: id})
+    res.send(transaction)
+
+    }
+
+
+  }
   } catch {
 
     res.status(500).send(error)
@@ -50,8 +70,7 @@ transactionRouter.get('/', async(req, res)=>{
   }
  })
 
-
- transactionRouter.post('/:period', async (req, res)=>{
+ transactionRouter.post('/', async (req, res)=>{
 
   try {
     
